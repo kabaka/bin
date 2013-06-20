@@ -1,0 +1,5 @@
+#!/bin/sh
+
+cuebreakpoints "$1" | sed s/$/0/ | shnsplit -o flac -t "%n - %t" "$2"
+cuetag.sh "$1" *.flac
+
