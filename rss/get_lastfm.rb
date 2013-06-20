@@ -1,50 +1,40 @@
 #!/usr/bin/ruby
 
-require "net/http"
-require "uri"
-require "strscan"
+require 'net/http'
+require 'uri'
+require 'strscan'
 
-Dir.chdir("/home/kabaka/scripts/rss/")
+user_name = 'KabakaDragon'
 
-URL = "http://ws.audioscrobbler.com/2.0/user/KabakaDragon/podcast.rss"
+
+Dir.chdir __dir__
+
+uri = URI("http://ws.audioscrobbler.com/2.0/user/#{user_name}/podcast.rss")
+downloaded_list = []
+downloaded_file = 'lastfm.dat'
+
 
 puts "Downloading page..."
 
-begin
-  page = Net::HTTP.get URI.parse(URL)
-rescue => e
-  puts "I was unable to get the page: #{e}"
-  exit -1
+page = Net::HTTP.get uri
+
+if File.exists? downloaded_file
+  downloaded_list = File.read(downloaded_file).lines
 end
 
-downloaded_list = Array.new
+dat = File.open downloaded_file, 'a'
 
-if File.exists? "last_lastfm.dat"
-  downloaded_list = File.read("lastfm.dat").split("\n")
-else
-  puts "Looks like we've never downloaded from this feed. Getting everything!"
-end
+page.scan(/http.+\.mp3/) do |match|
+  next if downloaded_list.include? match
 
-num = 1
+  print "Downloading #{match}..."
 
-dat = File.open("lastfm.dat", 'a')
-
-matches = page.scan(/http.+\.mp3/)
-
-matches.each do |match|
-    if downloaded_list.include? match
-    next
-  end
-
-  puts "[#{num}/#{matches.length}] Downloading #{match}"
-
-  if system("wget -q -P /home/kabaka/downloads/last-fm/ #{match}")
+  if system "wget -q -P /home/kabaka/downloads/last-fm/ #{match}"
     dat.puts match
+    puts ' Done'
   else
-    puts " - Failed!"
+    puts ' FAILED'
   end
-
-  num += 1
 end
 
 dat.close
