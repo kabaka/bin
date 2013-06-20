@@ -1,7 +1,11 @@
 #!/usr/bin/env ruby
 
 #
-# Morse Code Translator
+# Morse Code Brute Forcer
+#
+# Some kind idiot provided me with some morse code text that contained no
+# spaces, so I hacked this together to produce a list of possible translations
+# as part of the solving process.
 #
 # Copyright (C) 2013 Kyle Johnson <kyle@vacantminded.com>
 #
@@ -53,37 +57,22 @@ KEY = {
  '--..' => 'Z'
 }
 
-@buffer  = ''
-@passes  = []
-@current = []
-
-def decode so_far, remainder
-  #puts so_far
-
+def decode remainder, so_far = ''
   if remainder.nil?
     puts so_far
     return
   end
 
   5.times do |length|
-    if length > remainder.length
-      #abort so_far
-      #puts 'failed'
-      return
-    end
+    return if length > remainder.length
 
     part = remainder[0..length]
 
     if KEY.has_key? part
-      #puts "#{part} #{length} #{remainder[length..-1]}"
-      #puts "#{KEY.index(part).chr}"
-
-
-      next_part = decode "#{so_far}#{KEY[part]}", remainder[length+1..-1]
+      next_part = decode remainder[length+1..-1], "#{so_far}#{KEY[part]}"
     end
   end
 end
 
 
-#decode '', '..-.-------....-.-.'
-decode '', ARGV.first
+decode ARGV.first
