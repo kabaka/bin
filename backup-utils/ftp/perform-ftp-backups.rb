@@ -1,8 +1,6 @@
 #!/usr/bin/env ruby
 
-Dir.chdir __dir__
-
-password_file = '.passwd'
+password_file = "#{__dir__}/.passwd"
 
 unless File.exists? password_file
   abort 'no password file'
