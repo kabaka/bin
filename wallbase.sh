@@ -1,7 +1,7 @@
 #!/bin/zsh
 
-if [ $# -ne 2 ]; then
-  echo "Usage: ${0} start_image query"
+if [ $# -ne 3 ]; then
+  echo "Usage: ${0} start_image query target_dir"
   echo ""
   echo "Note: query is not escaped or URL encoded"
   exit 1
@@ -27,7 +27,7 @@ rm $TEMPLIST
 
 cat $SORTTEMP
 
-aria2c -i$SORTTEMP -x1 -j1 --retry-wait=60 -m10 -d ~/downloads/wallbase/`echo "$1" | sed -r "s/[^A-Za-z]/_/g"`/
+aria2c -i$SORTTEMP -x1 -j1 --retry-wait=60 -m10 -d "~/downloads/wallbase/${3}"
 
 rm $SORTTEMP
 
