@@ -49,6 +49,11 @@ OptionParser.new do |opts|
   opts.on '-n', '--digits NUM', 'Number of digits to include in file numbers.' do |digits|
     $opts[:digits] = digits.to_i
   end
+
+  $opts[:first] = 1
+  opts.on '-f', '--first NUM', 'First number in the sequence.' do |first|
+    $opts[:first] = first.to_i
+  end
 end.parse!
 
 FileUtils.mkdir_p $opts[:output_dir]
@@ -81,7 +86,7 @@ result = $files.sort_by {|n, v| v}
 
 result.each_with_index do |(file, mtime), num|
   ext = File.extname file
-  num = num.to_s.rjust $opts[:digits], '0'
+  num = (num + $opts[:first]).to_s.rjust $opts[:digits], '0'
 
   output_file = "#{$opts[:output_dir]}/#{$opts[:prefix]}#{num}#{ext}"
 
