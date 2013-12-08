@@ -63,7 +63,7 @@ NAME_MAP = {
 
 
 def ingest_file path, match
-  series = match[:series_title].downcase.tr_s '^a-z', '-'
+  series = match[:series_title].downcase.tr_s '^a-z0-9', '-'
 
   NAME_MAP.each do |regex, title|
     if series.match regex
