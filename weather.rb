@@ -8,7 +8,7 @@ require 'em-http-request'
 # overkill to use EM for one request? maybe
 
 EventMachine.run do
-  http = EventMachine::HttpRequest.new('http://api.wunderground.com/auto/wui/geo/WXCurrentObXML/index.xml').get :query => {'query' => '74075'}
+  http = EventMachine::HttpRequest.new('http://api.wunderground.com/auto/wui/geo/WXCurrentObXML/index.xml').get :query => {'query' => '75254'}
 
   http.errback do
     puts 'Weather conditions could not be retrieved.'
