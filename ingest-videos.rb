@@ -24,8 +24,8 @@
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
 #
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -40,8 +40,8 @@ require 'fileutils'
 
 # this is hax -- sorry
 
-#SOURCE_DIR = File.expand_path '~/downloads/'
-DEST_DIR   = File.expand_path '~/media/video/television/'
+#source_dir = file.expand_path '~/downloads/'
+dest_dir = file.expand_path '~/media/visual/video/television/'
 
 VIDEO_EXTENSIONS = %w[
   .mkv
@@ -87,33 +87,33 @@ end
 
 
 def ingest_dir dir
-  Dir.chdir dir
+  Dir.chdir dir do
 
-  Dir.foreach dir do |path|
-    match = path.match REGEX
+    Dir.foreach dir do |path|
+      match = path.match REGEX
 
-    #p path, match
+      #p path, match
 
-    next unless match
+      next unless match
 
-    if File.directory? path
-      ingest_dir File.join dir, path
+      if File.directory? path
+        ingest_dir File.join dir, path
+      end
+
+      unless VIDEO_EXTENSIONS.include? File.extname path
+        warn "warning: unknown extension on possible match \"#{path}\""
+        next
+      end
+
+      ingest_file path, match
     end
 
-    unless VIDEO_EXTENSIONS.include? File.extname path
-      $stderr.puts "warning: unknown extension on possible match \"#{path}\""
-      next
-    end
-
-    ingest_file path, match
   end
-
-  Dir.chdir '..'
 end
 
 ARGV.each do |dir|
   unless File.directory? dir
-    $stderr.puts "skipping non-existent directory \"#{dir}\""
+    warn "skipping non-existent directory \"#{dir}\""
   end
 
   ingest_dir File.expand_path dir
