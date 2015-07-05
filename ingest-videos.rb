@@ -41,7 +41,7 @@ require 'fileutils'
 # this is hax -- sorry
 
 #SOURCE_DIR = file.expand_path '~/downloads/'
-DEST_DIR = File.expand_path '~/media/visual/video/television/'
+DEST_DIR = File.expand_path '~/var/media/visual/video/television/'
 
 VIDEO_EXTENSIONS = %w[
   .mkv
