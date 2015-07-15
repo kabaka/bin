@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
-cd ~/downloads/
+cd ~/var/downloads/firefox/
 
 echo "Checking for torrents..."
 
@@ -16,7 +16,9 @@ do
     then
       echo "Success! Archiving: ${f}"
 
-      mv "${f}" rutracker-archive
+      mkdir -p ~/var/downloads/torrents/rutracker-archive/
+
+      mv "${f}" ~/var/downloads/torrents/rutracker-archive/
       # TODO: compress, etc.
     else
       echo "Failed to add to transmission."
