@@ -1,33 +1,32 @@
 #!/usr/bin/env ruby
 
-if ARGV.empty?
-  abort "Usage: #{$0} directories"
-end
+abort "Usage: #{$0} directories" if ARGV.empty?
+ 
+Dir.chdir __dir__
 
 ARGV.each do |dir|
-  Dir.chdir __dir__
 
   unless Dir.exists? dir
-    $stderr.puts "no such directory \"#{dir}\""
+    warn "no such directory: #{dir}"
     next
   end
 
-  Dir.chdir dir
+  Dir.chdir dir do
+    Dir['*'].each do |dir_item|
+      if File.directory? dir_item
+        warn "skipping directory: #{dir_item}"
+        next
+      end
 
-  Dir['*'].each do |dir_item|
-    if File.directory? dir_item
-      $stderr.puts "skipping directory \"#{dir_item}\""
-      next
+      unless File.executable? dir_item
+        warn "skipping non-executable file: #{dir_item}"
+        next
+      end
+
+      puts "running: #{dir_item}"
+
+      system "./#{dir_item}"
     end
-
-    unless File.executable? dir_item
-      $stderr.puts "skipping non-executable file \"#{dir_item}\""
-      next
-    end
-
-    $stdout.puts "running \"#{dir_item}\""
-
-    system "./#{dir_item}"
   end
 end
 
