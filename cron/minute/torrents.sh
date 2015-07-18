@@ -4,7 +4,7 @@ cd ~/var/downloads/firefox/
 
 echo "Checking for torrents..."
 
-for f in *rutracker*.torrent;
+for f in *.torrent;
 do
   if [ -f $f ];
   then
@@ -16,9 +16,9 @@ do
     then
       echo "Success! Archiving: ${f}"
 
-      mkdir -p ~/var/downloads/torrents/rutracker-archive/
+      mkdir -p ~/var/downloads/torrents/archive/
 
-      mv "${f}" ~/var/downloads/torrents/rutracker-archive/
+      mv "${f}" ~/var/downloads/torrents/archive/
       # TODO: compress, etc.
     else
       echo "Failed to add to transmission."
