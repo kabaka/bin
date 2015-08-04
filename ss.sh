@@ -2,7 +2,7 @@
 
 # Upload
 sleep 0.1
-scrot -s -e '~/bin/s3up "$f" | xclip && rm "$f"' && firefox -new-tab "`xclip -o`"
+scrot -s -e '~/bin/s3up "$f" | xclip && rm "$f"' && $BROWSER "`xclip -o`"
 
 # Local
 #scrot -s '%s_$wx$h.png' -e 'mv $f ~/images/ss/ 2>/dev/null'
