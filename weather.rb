@@ -25,7 +25,7 @@ EventMachine.run do
     humidity    = root.elements["//relative_humidity"].text
     wind        = root.elements["//wind_string"].text
 
-    puts "Current Weather Conditions: #{weather}, #{temperature}, #{humidity} Humidity, Wind #{wind}"
+    puts "#{weather}, #{temperature}, #{humidity} Humidity, Wind #{wind}"
 
     EM.stop
   end
